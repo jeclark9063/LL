@@ -6,6 +6,7 @@ Due: 10/09/2017
  */
 
 #include <iostream>
+#include <string>
 using namespace std;
 
 /* updated on Sunday by Abdullah
@@ -88,14 +89,16 @@ private:
 template <class T>
 void LinkedList<T>::displayList(Node<T> *head) {
     Node<T> *temp = head;
-    Node<T> *curs = cursor->getLink();
+    T curs = cursor->getData();
     cout << "Head ";
     while (temp != NULL) {
         cout << " \t ";
-        if(temp == curs){
+        if(temp->getData() == curs){
             cout << "[" << temp->getData() << "]";
         }
-        cout << temp->getData();
+		else {
+			cout << temp->getData();
+		}
         temp = temp->getLink();
     }
     cout << endl;
@@ -110,7 +113,7 @@ bool LinkedList<T>::insert(Node<T> *afterMe, T theData) {
      * */
     //else{
         afterMe->setLink(new Node<T>(theData, afterMe->getLink()));
-        //cursor = afterMe->getLink();
+        cursor = afterMe->getLink();
         return true;
     }
 //}
@@ -266,11 +269,10 @@ void getChoice(){
 int main() {
     LinkedList <string> test;
     Node<string>* head = NULL;
-    char choice;
-    getChoice();
+    char choice = 0;
    
         while (choice != 'q' || choice != 'Q') {
-        	cout << "Enter in your choice: " << endl;
+			getChoice();
         	cin >> choice;
         switch (choice) {
            	case '+': test.tailInsert(head); break;
