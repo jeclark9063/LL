@@ -243,35 +243,55 @@ bool LinkedList<T>::isEmpty(const Node<T> *head){
         return(false);
     }
 }
+void getChoice(){
+	cout << "+ : Insert" << endl;
+	cout << "- : Remove" << endl;
+	cout << "? : Search" << endl;
+	cout << "p : Print" << endl;
+	cout << "@ : At Cursor" << endl;
+	cout << "b : Go to Beginning" << endl;
+	cout << "e : Go to End" << endl;
+	cout << "> : Go to Next" << endl;
+	cout << "< : Go to Previous" << endl;
+	cout << "1 : Test Linked List Constructor" << endl;
+	cout << "2 : Test Linked List Copy Constructor" << endl;
+	cout << "3 : Test Destructor" << endl;
+	cout << "4 : Test Assignment Operator" << endl;
+	cout << "5 : Clear List" << endl;
+	cout << "6:  Test Empty List" << endl;
+	cout << "m : Print Menu" << endl;
+	cout << "q : Quit" << endl;
+}
 
 int main() {
     LinkedList <string> test;
     Node<string>* head = NULL;
-    cout << "display list here" << endl;
     char choice;
-
-    while (choice != 'q' || choice != 'Q') {
-        cout << "Enter choice: " << endl;
-        
-        cin >> choice;
-        
+    getChoice();
+   
+        while (choice != 'q' || choice != 'Q') {
+        	cout << "Enter in your choice: " << endl;
+        	cin >> choice;
         switch (choice) {
-            case '+': test.tailInsert(head); break;
+           	case '+': test.tailInsert(head); break;
             case '-': test.deleteNode(head); break;
             case '?': test.search(head); break;
             case 'p': test.displayList(head); break;
-            case '@':  break;
-            case 6: break;
+            case '@': break;
+            case 'b': break;
+            case 'e': break;
+            case '>': break;
+            case '<': break;
+            case '1': break;
+            case '2': break;
+            case '3': break;
+            case '4': break;
+            case '5': break;
+            case '6': break;
+            case 'm': getChoice(); break;
+            case 'q': ; break;
             default: cout << "shouldn't hit this" << endl; break;
-            /* case 7:
-            case 8:
-            case 9: 
-            case 10: 
-            case 11:
-            case 12: */
-            }
-            //choice = getChoice();
-    }
-    //system("pause");
+        	}
+      	}
     return 0;
 }
