@@ -246,36 +246,31 @@ bool LinkedList<T>::isEmpty(const Node<T> *head){
         return(false);
     }
 }
-void getChoice(){
-	cout << "+ : Insert" << endl;
-	cout << "- : Remove" << endl;
-	cout << "? : Search" << endl;
-	cout << "p : Print" << endl;
-	cout << "@ : At Cursor" << endl;
-	cout << "b : Go to Beginning" << endl;
-	cout << "e : Go to End" << endl;
-	cout << "> : Go to Next" << endl;
-	cout << "< : Go to Previous" << endl;
-	cout << "1 : Test Linked List Constructor" << endl;
-	cout << "2 : Test Linked List Copy Constructor" << endl;
-	cout << "3 : Test Destructor" << endl;
-	cout << "4 : Test Assignment Operator" << endl;
-	cout << "5 : Clear List" << endl;
-	cout << "6:  Test Empty List" << endl;
-	cout << "m : Print Menu" << endl;
-	cout << "q : Quit" << endl;
+void choiceMenu(){
+    
+    cout << "+ : Insert\n" << "- : Remove\n" << "? : Search\n" 
+        << "p : Print\n" << "@ : At Cursor\n" << "b : Go to Beginning\n" 
+        << "e : Go to End\n" << "> : Go to Next\n" << "< : Go to Previous\n" 
+        << "1 : Test Linked List Constructor\n"  
+        << "2 : Test Linked List Copy Constructor\n" << "3 : Test Destructor\n" 
+        << "4 : Test Assignment Operator\n"  << "5 : Clear List\n" 
+        << "6:  Test Empty List\n" << "m : Print Menu\n" << "q : Quit\n";
 }
 
 int main() {
     LinkedList <string> test;
     Node<string>* head = NULL;
     char choice = 0;
-   
-        while (choice != 'q' || choice != 'Q') {
-			getChoice();
-        	cin >> choice;
-        switch (choice) {
-           	case '+': test.tailInsert(head); break;
+    
+    choiceMenu();
+    
+    cout << "Enter your choice from the menu: ";
+    cin >> choice;
+    
+    while (choice != 'q') {
+       
+        switch (choice) {       
+            case '+': test.tailInsert(head); break;
             case '-': test.deleteNode(head); break;
             case '?': test.search(head); break;
             case 'p': test.displayList(head); break;
@@ -290,10 +285,14 @@ int main() {
             case '4': break;
             case '5': break;
             case '6': break;
-            case 'm': getChoice(); break;
-            case 'q': ; break;
-            default: cout << "shouldn't hit this" << endl; break;
-        	}
-      	}
+            case 'm': break;
+            case 'q': break;break;
+            default: cout << "Wrong input" << endl; break;
+        }
+        
+        cout << "Enter your choice from the menu: ";
+        cin >> choice;
+        
+    }
     return 0;
 }
