@@ -9,25 +9,21 @@ Due: 10/09/2017
 #include <string>
 using namespace std;
 
-/* updated on Sunday by Abdullah
- * added a copy constructor for Node class
- * added AtCursor() for LinkedList class
- * added isEmpty() for LinkedList class
- */
-
-
 //Start node header
+
 template <class T>
 class Node {
 public:
 
-    Node() {}
+    Node() {
+    }
 
     Node(const Node &temp);
-    
-    Node(T theData, Node *theLink) : data(theData), link(theLink) {}
 
-    Node *getLink() const {
+    Node(T theData, Node *theLink) : data(theData), link(theLink) {
+    }
+
+    Node* getLink() const {
         return link;
     }
 
@@ -48,9 +44,10 @@ private:
 };
 
 //copy constructor 
+
 template <class T>
 Node<T>::Node(const Node &temp) {
-    
+
     Node *node = new Node;
     node->data = temp->data;
     node->link = temp->link;
@@ -58,6 +55,7 @@ Node<T>::Node(const Node &temp) {
 }
 
 //Start linked list header
+
 template <class T>
 class LinkedList {
 public:
@@ -65,9 +63,10 @@ public:
     LinkedList() {
         head = NULL;
     }
+    
     void displayList(Node<T> *head);
     bool insert(Node<T> *afterMe, T theData);
-    void headInsert(Node<T> *&head, T theData);
+    void headInsert(Node<T> *&head);
     void tailInsert(Node<T> *&head);
     void search(Node<T> *head);
     bool deleteNode(Node<T> *&head);
@@ -75,9 +74,11 @@ public:
     LinkedList(const LinkedList&);
     ~LinkedList();
     LinkedList<T> &operator=(const LinkedList<T> &rhs);
-    //add cursor function
-    Node<T> AtCursor(const Node<T> &temp);
-    //move cursor functions
+    void returnCursorItem(T &data);
+    void moveCursorBegin(Node<T>* head);
+    void moveCursorEnd(Node<T>* head);
+    void goToNext(Node<T>* head);
+    void goToPrev(Node<T>* head);
 private:
     Node<T> *head;
     Node<T> *cursor;
@@ -86,47 +87,52 @@ private:
 //linked list implementation
 
 //displays list
+
 template <class T>
 void LinkedList<T>::displayList(Node<T> *head) {
     Node<T> *temp = head;
-    T curs = cursor->getData();
-    cout << "Head ";
-    while (temp != NULL) {
-        cout << " \t ";
-        if(temp->getData() == curs){
-            cout << "[" << temp->getData() << "]";
+  
+    if (isEmpty(head))
+        cout << "List is empty" << endl;
+    
+    else{   
+        cout << "Head ";
+
+        while (temp != NULL) {
+            cout << " \t ";
+            if (temp->getLink() == cursor->getLink()) {
+                cout << "[" << temp->getData() << "]";
+            } else {
+                cout << temp->getData();
+            }
+            temp = temp->getLink();
         }
-		else {
-			cout << temp->getData();
-		}
-        temp = temp->getLink();
+        cout << endl;   
     }
-    cout << endl;
 }
 
 //inserts item into list
+
 template <class T>
 bool LinkedList<T>::insert(Node<T> *afterMe, T theData) {
-    /*if(isEmpty(head)){
-        return false;
-    }
-     * */
-    //else{
-        afterMe->setLink(new Node<T>(theData, afterMe->getLink()));
-        cursor = afterMe->getLink();
-        return true;
-    }
-//}
+  
+    afterMe->setLink(new Node<T>(theData, afterMe->getLink()));
+    cursor = afterMe->getLink();
+    return true;
+}
 
 //inserts item as head
 template <class T>
-void LinkedList<T>::headInsert(Node<T> *&head, T theData) {
+void LinkedList<T>::headInsert(Node<T> *&head) {
+    T theData;
     cout << "Enter your item to place in the linked list" << endl;
     cin >> theData;
     head = new Node<T>(theData, head);
+    cursor = head;
 }
 
 //inserts item as tail
+
 template <class T>
 void LinkedList<T>::tailInsert(Node<T> *&head) {
     Node<T> *temp;
@@ -136,6 +142,7 @@ void LinkedList<T>::tailInsert(Node<T> *&head) {
         cout << "Enter your item to place in the linked list" << endl;
         cin >> theData;
         head = new Node<T>(theData, head);
+        cursor = head;
     } else {
         temp = head;
         next = temp->getLink();
@@ -150,6 +157,7 @@ void LinkedList<T>::tailInsert(Node<T> *&head) {
 }
 
 //search list for item
+
 template <class T>
 void LinkedList<T>::search(Node<T> *head) {
     Node<T> *here = head;
@@ -171,6 +179,7 @@ void LinkedList<T>::search(Node<T> *head) {
 }
 
 //deletes node
+
 template <class T>
 bool LinkedList<T>::deleteNode(Node<T> *&head) {
     T target;
@@ -202,97 +211,203 @@ bool LinkedList<T>::deleteNode(Node<T> *&head) {
 }
 
 //copy operator
+
 template <class T>
 LinkedList<T>::LinkedList(const LinkedList<T> &LL) {
     head = LL.head;
 }
 
 //destructor
+
 template <class T>
 LinkedList<T>::~LinkedList() {
-    
     Node<T> *current = head;
     while (current) {
         Node<T> *next = current->getLink();
         delete current;
         current = next;
     }
+    cout << "LinkedList class destructor called" << endl;
 }
 
 //assignment operator
+
 template <class T>
 LinkedList<T> &LinkedList<T>::operator=(const LinkedList<T> &rhs) {
-    
-    LinkedList<T> temp(rhs);
+    //needs to be figured out
+    /*LinkedList<T> temp(rhs);
     std::swap(head, temp->head);
+    return *this;
+     */
+    head = rhs.head;
     return *this;
 }
 
-//returns data at cursor 
+//tells whether or not list is empty
+
 template <class T>
-Node<T> LinkedList<T>::AtCursor(const Node<T> &temp){
+bool LinkedList<T>::isEmpty(const Node<T> *head) {
     
-    return(temp->getData());
+    if (head == NULL) {
+        return (true);
+    } else {
+        return (false);
+    }
 }
 
-//tells whether or not list is empty
+//returns item at cursor
+
 template <class T>
-bool LinkedList<T>::isEmpty(const Node<T> *head){
- 
-    if(head->getLink()==NULL){
-        return(true);
-    }
+void LinkedList<T>::returnCursorItem(T &data) {
+    data = cursor->getData();
+}
+
+//moves cursor to beginning
+
+template <class T>
+void LinkedList<T>::moveCursorBegin(Node<T>* head) {
+    cursor = head;
+}
+
+template <class T>
+void LinkedList<T>::moveCursorEnd(Node<T>* head) {
+    Node<T>* temp = head;
+
+    if (isEmpty(head))
+        cursor->setLink(NULL);
+    
     else{
-        return(false);
+        temp = head;
+        while (temp->getLink() != NULL){
+            temp = temp->getLink();
+        }
+        cursor = temp;
     }
 }
-void choiceMenu(){
-    
-    cout << "+ : Insert\n" << "- : Remove\n" << "? : Search\n" 
-        << "p : Print\n" << "@ : At Cursor\n" << "b : Go to Beginning\n" 
-        << "e : Go to End\n" << "> : Go to Next\n" << "< : Go to Previous\n" 
-        << "1 : Test Linked List Constructor\n"  
-        << "2 : Test Linked List Copy Constructor\n" << "3 : Test Destructor\n" 
-        << "4 : Test Assignment Operator\n"  << "5 : Clear List\n" 
-        << "6:  Test Empty List\n" << "m : Print Menu\n" << "q : Quit\n";
+
+template <class T>
+void LinkedList<T>::goToNext(Node<T>* head) { // gotta add cases where cursor at end
+    if (isEmpty(head)) {
+        cursor->setLink(NULL);
+    } else {
+        if (cursor->getLink() != NULL) {
+            cursor = cursor->getLink();
+        }
+        else{
+            cursor = head;
+        }
+    }
+}
+
+template <class T>
+void LinkedList<T>::goToPrev(Node<T>* head) { 
+ 
+    if (isEmpty(head)) 
+        cursor->setLink(NULL);
+  
+    else{
+        
+        Node<string>* temp = head;
+        
+        if (cursor == head){
+            
+            temp = head;
+            
+            while (temp->getLink() != NULL){
+                temp = temp->getLink();
+            }
+            cursor = temp;
+        }
+          
+        else{        
+            while(temp->getLink() != cursor){
+                temp = temp->getLink();
+            }    
+
+            cursor = temp;
+        }
+    }
+}
+
+void choiceMenu() {
+    cout << "+ : Insert at tail" << endl;
+    cout << "* : Insert at head" << endl;
+    cout << "- : Remove" << endl;
+    cout << "? : Search" << endl;
+    cout << "p : Print" << endl;
+    cout << "@ : At Cursor" << endl;
+    cout << "b : Go to Beginning" << endl;
+    cout << "e : Go to End" << endl;
+    cout << "> : Go to Next" << endl;
+    cout << "< : Go to Previous" << endl;
+    cout << "1 : Test Linked List Constructor" << endl;
+    cout << "2 : Test Linked List Copy Constructor" << endl;
+    cout << "3 : Test Destructor" << endl;
+    cout << "4 : Test Assignment Operator" << endl;
+    cout << "5 : Clear List" << endl;
+    cout << "6:  Test Empty List" << endl;
+    cout << "m : Print Menu" << endl;
+    cout << "q : Quit" << endl;
+}
+
+void callLLConstructor() {
+    LinkedList <string> mtest;
+}
+
+void callCopyConstructor(LinkedList <string> test) {
+    LinkedList <string> cpytest(test);
 }
 
 int main() {
     LinkedList <string> test;
+    LinkedList <string> eqtest;
     Node<string>* head = NULL;
+    Node<string>* eqHead = NULL;
+    string testRet;
+    string newLL;
+
     char choice = 0;
-    
-    choiceMenu();
-    
-    cout << "Enter your choice from the menu: ";
-    cin >> choice;
-    
+
     while (choice != 'q') {
-       
-        switch (choice) {       
+        choiceMenu();
+        cin >> choice;
+        switch (choice) {
             case '+': test.tailInsert(head); break;
+            case '*': test.headInsert(head); break;
             case '-': test.deleteNode(head); break;
             case '?': test.search(head); break;
             case 'p': test.displayList(head); break;
-            case '@': break;
-            case 'b': break;
-            case 'e': break;
-            case '>': break;
-            case '<': break;
-            case '1': break;
-            case '2': break;
-            case '3': break;
-            case '4': break;
-            case '5': break;
-            case '6': break;
-            case 'm': break;
-            case 'q': break;break;
+            case '@': test.returnCursorItem(testRet);
+                cout << testRet << endl; break;
+            case 'b': test.moveCursorBegin(head); break;
+            case 'e': test.moveCursorEnd(head); break;
+            case '>': test.goToNext(head); break;
+            case '<': test.goToPrev(head); break;
+            case '1': callLLConstructor(); break;
+            case '2': callCopyConstructor(test); break;
+            case '3': test.~LinkedList(); eqtest.~LinkedList(); break; 
+            case '4': eqtest = test; break;
+            case '5': test.~LinkedList(); eqtest.~LinkedList(); break;
+            case '6': 
+                if(test.isEmpty(head))
+                    cout << "List is empty" << endl;
+                else 
+                    cout << "List is not empty" << endl; break;
+            case 'm': choiceMenu(); break;
+            case 'q': break;
             default: cout << "Wrong input" << endl; break;
         }
-        
-        cout << "Enter your choice from the menu: ";
-        cin >> choice;
-        
     }
+    
+    /* Test cases 
+    cout << "Testing all cases: " << endl;
+    cout << "Inserting at head:" << endl; 
+    test.headInsert(head);
+    
+    cout << "Inserting another item: " <<endl;
+    test.tailInsert(head);
+    */
+    
+    system("pause");
     return 0;
 }
